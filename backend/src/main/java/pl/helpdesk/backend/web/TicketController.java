@@ -47,7 +47,7 @@ public class TicketController implements InitializingBean {
         return ticketRepository.save(newTicket);
     }
 
-    @PatchMapping("/employees/{id}/{subject}")
+    @PatchMapping("/tickets/{id}/{subject}")
     public ResponseEntity<Ticket> updateTicketSubject(@PathVariable String id, @PathVariable String subject) {
 	try {
 		Ticket ticket = ticketRepository.findById(id).get();
