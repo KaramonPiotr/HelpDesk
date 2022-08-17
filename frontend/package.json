@@ -38,7 +38,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate-api": "npx @openapitools/openapi-generator-cli generate -g typescript-axios -i api-docs/openapi.json -o src/api"
   },
   "eslintConfig": {
     "extends": [
@@ -59,8 +60,6 @@
     ]
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.8",
-    "postcss": "^8.4.16",
-    "tailwindcss": "^3.1.8"
+    "autoprefixer": "^10.4.8"
   }
 }
