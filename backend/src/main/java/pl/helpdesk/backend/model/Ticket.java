@@ -13,7 +13,7 @@ public class Ticket {
     @Id
     String id;
     String subject;
-    String descrition;
+    String description;
     Priority priority;
     Status status;
 
