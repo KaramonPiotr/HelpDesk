@@ -16,7 +16,10 @@ import {
     Routes,
     Route,
     Link
-  } from "react-router-dom";
+} from "react-router-dom";
+import { Badge, Box, NavLink } from '@mantine/core';
+import { IconHome2, IconPlus, IconChevronRight, IconActivity, IconCircleOff } from '@tabler/icons';
+
 import ListTicketsComponent from './ListTicketsComponent';
 import CreateTicketComponent from './CreateTicketComponent';
 
@@ -35,14 +38,8 @@ function AppShellProject() {
       asideOffsetBreakpoint="sm"
       navbar={
         <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
-          <div style={{display:"flex", flexDirection: "column"}}>
-                <Text component={Link} variant="link" to="/">
-                    List Tickets
-                </Text>
-                <Text component={Link} variant="link" to="/add">
-                    Add Ticket
-                </Text>
-          </div>
+            <NavLink label="Tickets" icon={<IconHome2 size={16} stroke={1.5} />} component={Link} to="/" />
+            <NavLink label="New ticket" icon={<IconPlus size={16} stroke={1.5} />} component={Link} to="/add" />
         </Navbar>
       }
     //   aside={
