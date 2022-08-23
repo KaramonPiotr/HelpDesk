@@ -10,6 +10,9 @@ class TicketService{
     createTicket(ticket: any){
         return axios.post(TICKET_API_BASE_URL, ticket);
     }
+    getTicketById(ticket: string){
+        return axios.get(TICKET_API_BASE_URL+ticket);
+    }
 }
 
 export default new TicketService()
