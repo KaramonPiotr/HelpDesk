@@ -12,36 +12,59 @@ import {
   useMantineTheme,
   Switch,
 } from '@mantine/core';
+
 import {
     BrowserRouter as Router,
     Routes,
     Route,
-    Link
+    Link,
+    useNavigate
 } from "react-router-dom";
-import { Security, SecureRoute, LoginCallback } from '@okta/okta-react';
-import { Badge, Box, NavLink } from '@mantine/core';
-import { IconHome2, IconPlus, IconChevronRight, IconActivity, IconCircleOff } from '@tabler/icons';
 
+import { Badge, Box, NavLink } from '@mantine/core';
+
+import { IconHome2, IconPlus, IconChevronRight, IconActivity, IconCircleOff ,IconLockAccess} from '@tabler/icons';
+
+
+
+import { SecureRoute, Security, LoginCallback } from '@okta/okta-react';
+
+import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
+
+import { RequiredAuth } from '../okta/SecureRoute';
+
+
+//Komponenty
 import ListTicketsComponent from './ListTicketsComponent';
 import CreateTicketComponent from './CreateTicketComponent';
 import TicketDetails from './TicketDetails';
-import Login from '.okta/Login'
+import Protected from './Protected';
+import Loading from '../okta/Loading';
 
 
-function onAuthRequired({history}){
-  history.push('login');
-}
+
 
 function AppShellProject() {
+
+  const oktaAuth = new OktaAuth({
+    issuer: 'https://dev-44624176.okta.com/oauth2/default',
+    clientId: '0oa68vyup2X3Y97oi5d7',
+    redirectUri: 'http://localhost:3000/login/callback'
+  });
+
+  
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+
+  const navigate = useNavigate();
+  const _restoreOriginalUri = (_oktaAuth: any,  originalUri: string) => {
+    navigate(toRelativeUrl(originalUri || '/', window.location.origin));
+  };
+
+
   return (
-<Router>
-  <Security
-    issuer = 'https://dev-44624176.okta.com/oauth2/default'
-    client_id = '0oa68vyup2X3Y97oi5d7'
-    redirect_uri={window.location.origin + 'implicit/callback'}
-    onAuthRequired={onAuthRequired}> 
+  <Security oktaAuth={oktaAuth} 
+            restoreOriginalUri={oktaAuth.options.restoreOriginalUri|| _restoreOriginalUri}>
       <AppShell
         styles={{
           main: {
@@ -54,15 +77,10 @@ function AppShellProject() {
           <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
               <NavLink label="Tickets" icon={<IconHome2 size={16} stroke={1.5} />} component={Link} to="/" />
               <NavLink label="New ticket" icon={<IconPlus size={16} stroke={1.5} />} component={Link} to="/add" />
+              <NavLink label="Protected" icon={<IconLockAccess size={16} stroke={1.5} />} component={Link} to="/protected" />
           </Navbar>
         }
-      //   aside={
-      //     <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-      //       <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
-      //         <Text>Application sidebar</Text>
-      //       </Aside>
-      //     </MediaQuery>
-      //   }
+ 
         footer={
           <Footer height={60} p="md">
             Application footer
@@ -87,15 +105,17 @@ function AppShellProject() {
         }
       >
           <Routes>
-              <Route path="/" element = {<ListTicketsComponent/>}></Route>
+               <Route path='/' element={<ListTicketsComponent/>}></Route>
+              <Route path='login/callback' element={<LoginCallback loadingElement={<Loading />} />} />
+              <Route path='/protected' element={<RequiredAuth />}>
+                  <Route path='' element={<Protected />} />
+              </Route>
               <Route path="/add" element = {<CreateTicketComponent/>}></Route>
-              <SecureRoute path="/tickets/:ticketId"  element = {<TicketDetails/>}></SecureRoute>
-              <Route path="/login" render = {() => <Login baseURL = "https://dev-44624176.okta.com/oauth2/default"/>} ></Route>
-              <Route path="/implicity/callback" component = {ImplicityCallback} ></Route>
+              <Route path="/tickets/:ticketId"  element = {<TicketDetails/>}></Route>
+              
           </Routes>
         </AppShell>
       </Security> 
-    </Router>
   );
   
 }

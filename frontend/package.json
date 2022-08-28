@@ -16,12 +16,14 @@
     "@mantine/prism": "^5.0.3",
     "@mantine/rte": "^5.0.3",
     "@mantine/spotlight": "^5.0.3",
+    "@okta/okta-auth-js": "^6.7.6",
+    "@okta/okta-react": "^6.6.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.11.47",
-    "@types/react": "^18.0.15",
+    "@types/node": "^16.11.54",
+    "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "axios": "^0.27.2",
     "dayjs": "^1.11.4",
@@ -60,6 +62,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-router-dom": "^5.3.3",
     "autoprefixer": "^10.4.8"
   }
 }
