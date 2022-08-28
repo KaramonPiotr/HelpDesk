@@ -112,7 +112,6 @@ function AppShellProject() {
               </Route>
               <Route path="/add" element = {<CreateTicketComponent/>}></Route>
               <Route path="/tickets/:ticketId"  element = {<TicketDetails/>}></Route>
-              
           </Routes>
         </AppShell>
       </Security> 
